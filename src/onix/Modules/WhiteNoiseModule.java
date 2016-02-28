@@ -27,7 +27,7 @@ public class WhiteNoiseModule {
     
     public WhiteNoiseModule (JPanel centerPanel,Synthesizer mainSynth,FilterBiquadCommon filter) {
     
-        jPanel=new JPanelFactory(centerPanel, 225, 109, Colors.DARK_BLUE,
+        jPanel=new JPanelFactory(centerPanel,0,0, 225, 109, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
         
         whiteNoise = new WhiteNoise();

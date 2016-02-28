@@ -42,7 +42,7 @@ public class FilterModule implements ActionListener {
     
     public FilterModule (JPanel downPanel,Synthesizer mainSynth,FilterLowPass FilterUnit) {
 
-        jPanel=new JPanelFactory(downPanel, 252, 110, Colors.DARK_BLUE,
+        jPanel=new JPanelFactory(downPanel,0,0, 252, 110, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
      
     

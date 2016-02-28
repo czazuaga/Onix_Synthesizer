@@ -17,8 +17,8 @@ private JPanelFactory jPanel;
     
     public PresetsModule (JPanel topPanel) {
      
-    jPanel=new JPanelFactory(topPanel, 312, 132, Colors.DARK_BLUE,
-            1, Colors.CRUNCH_WHITE);
+    jPanel=new JPanelFactory(topPanel,256,3, 290, 126, Colors.DARK_BLUE,
+      1, Colors.CRUNCH_WHITE);
       
    
     }

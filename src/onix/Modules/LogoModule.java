@@ -4,7 +4,6 @@ package onix.Modules;
 
 
 import StyleResources.Colors;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.net.URL;
 import javax.swing.BorderFactory;
@@ -18,17 +17,17 @@ public class LogoModule {
    
   protected Graphics g;
  
-  protected Dimension imgSize;
+
   
   protected URL url;
    
 
-    public LogoModule (JPanel mainPanel){
+    public LogoModule (JPanel topJPanel){
   
      initComponents();
     
-     jPanelLogo.setPreferredSize(new Dimension(252,132));
-     mainPanel.add(jPanelLogo);
+     
+     topJPanel.add(jPanelLogo);
 
     }
     
@@ -37,8 +36,10 @@ public class LogoModule {
     url=getClass().getResource("/images/logoBgPanel.png");
         
     jPanelLogo = new JPanelBackground();  
+    
     jPanelLogo.setBorder(BorderFactory.createLineBorder(Colors.CRUNCH_WHITE, 1));
     jPanelLogo.setBackground(url);
+    jPanelLogo.setBounds(3,3,253,126);
 
     }
 
