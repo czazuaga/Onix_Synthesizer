@@ -1,4 +1,4 @@
 # Onix_Synthesizer
 
-Onix Synthesizer is a open source Java synth software based in the JSynth library.
+Onix software synthesizer is an open source Java is a library based on the JSynth synthesizer, and I'm currently being developed.
 The actual state of the software is "In progress".
