@@ -3,7 +3,11 @@ package onix.Modules;
 
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
+import com.jsyn.ports.UnitInputPort;
+import com.jsyn.unitgen.FilterBiquadCommon;
+import com.jsyn.unitgen.FilterHighPass;
 import com.jsyn.unitgen.FilterLowPass;
+import com.jsyn.unitgen.LineOut;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,21 +37,38 @@ public class FilterModule implements ActionListener {
     
     private JButton selectFilterButton = new JButton();
     
-  
+    
+    
+    public FilterLowPass filterLowPass= new FilterLowPass();
+    public FilterHighPass filterHighPass= new FilterHighPass();
+    public FilterBiquadCommon mutableFilter= filterLowPass;
+    
+    private Synthesizer synth;
+    
+    private LineOut myout;
+    
     
     
     // Constructor -------------------------------------
     
     
     
-    public FilterModule (JPanel downPanel,Synthesizer mainSynth,FilterLowPass FilterUnit) {
+    public FilterModule (JPanel downPanel,Synthesizer mainSynth,LineOut myOut) {
 
-        jPanel=new JPanelFactory(downPanel,0,0, 252, 110, Colors.DARK_BLUE,
+        this.synth=mainSynth;
+        this.myout=myOut;
+        
+        
+        jPanel=new JPanelFactory(downPanel,3,3, 252, 126, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
      
-    
-        cutOffKnob = new KnobModule(FilterUnit.frequency, jPanel, 0, 6000, 0,170,18,50,50);
+        synth.add(this.mutableFilter);
         
+        mutableFilter.output.connect(0,myout.input,0);//Right channel
+        mutableFilter.output.connect(0,myout.input,1);//Left channel
+       
+        cutOffKnob = new KnobModule(mutableFilter.frequency, jPanel, 0, 6000, 0,
+            170,18,50,50);
           
   
         selectFilterButton();
@@ -58,7 +79,6 @@ public class FilterModule implements ActionListener {
     
     }
 
-   
     
     //--------------------------------------------------
     
@@ -98,13 +118,10 @@ public class FilterModule implements ActionListener {
     //-------------------------------------------------
     
     protected void selectFilterButton () { 
-        
-        
-        
+ 
         buttonURL = getClass().getResource("/images/button.png");
-        
-        
-       selectFilterButtonIcon = new ImageIcon(buttonURL);
+  
+        selectFilterButtonIcon = new ImageIcon(buttonURL);
           
         selectFilterButton.addActionListener(this);
         selectFilterButton.setActionCommand("selectFilter");
@@ -164,15 +181,20 @@ public class FilterModule implements ActionListener {
       
          if (ae.getActionCommand().equals("selectFilter")){
             
+             cambioDeFiltro();
+             
             if(getFilterType()==0){
-                
+    
                 led1.setIcon(led2Icon);
                 led2.setIcon(led1Icon);
-              filterNum=1;
-            }else{
                 
+              filterNum=1;
+              
+            }else{
+          
                 led1.setIcon(led1Icon);
                 led2.setIcon(led2Icon);
+                
               filterNum=0;
             }     
             System.out.println(getFilterType());
@@ -180,6 +202,13 @@ public class FilterModule implements ActionListener {
    
     }
     
+    void cambioDeFiltro(){
     
+    if(filterNum==0){
+  
+        }else{
+
+        }  
+    }
     
 }

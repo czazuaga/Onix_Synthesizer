@@ -1,28 +1,48 @@
 
 package com.onix.synthesizer;
 import StyleResources.Colors;
+import com.jsyn.JSyn;
+import com.jsyn.Synthesizer;
+import com.jsyn.devices.AudioDeviceManager;
+import com.jsyn.unitgen.FilterBiquadCommon;
+import com.jsyn.unitgen.FilterLowPass;
+import com.jsyn.unitgen.FilterStateVariable;
+import com.jsyn.unitgen.LineOut;
+import com.jsyn.unitgen.UnitGenerator;
+import com.softsynth.shared.time.ScheduledCommand;
+import com.softsynth.shared.time.TimeStamp;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import onix.Modules.FilterModule;
 import onix.Modules.LogoModule;
 import onix.Modules.PresetsModule;
+import onix.Modules.WhiteNoiseModule;
 
 
 public class MainSynth {
     
-    JFrame jFrame;
+JFrame jFrame;
     
-    JPanel fullPanel,topPanel,downPanel,leftPanel,centerPanel,rightPanel;
-
+JPanel fullPanel,topPanel,downPanel,leftPanel,centerPanel,rightPanel;
+    
+Synthesizer synth;
+LineOut myOut;
+    
+    
     void MainSynt() {
         
-        initComoponents();   
-   
+        initComoponents(); 
+        
     }
-    
+            
+
     private void initComoponents() {
+       //Init synth components
+        myOut = new LineOut();
+        synth = JSyn.createSynthesizer();   
        
         jFrame = new JFrame("Onix Synthesizer");
         fullPanel = new JPanel(null);
@@ -37,10 +57,32 @@ public class MainSynth {
     }
     
     
+    
+    private void configSynth (){
+        
+      int numInputChannels = 2;
+      int numOutputChannels = 2;
+        
+        synth.start( 44100, AudioDeviceManager.USE_DEFAULT_DEVICE, numInputChannels, AudioDeviceManager.USE_DEFAULT_DEVICE,
+             numOutputChannels );     
+        
+        synth.add( myOut);
+        
+        myOut.start();
+        
+    }
+    
+    
+    
     private void createModules () {
         LogoModule logoModule = new LogoModule(topPanel);
+        
+        FilterModule filterModule = new FilterModule(downPanel, synth,myOut);
+
+        WhiteNoiseModule whiteNoiseModule = new WhiteNoiseModule(rightPanel,
+                synth, filterModule.filterLowPass);
+       
         PresetsModule presetsModule = new PresetsModule(topPanel);
-            
     }
     
     
@@ -66,6 +108,8 @@ public class MainSynth {
         rightPanel.setBounds(546, 132,238, 297);
         rightPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));
         
+        configSynth();
+        
         createModules();
          
         fullPanel.add(topPanel);
@@ -83,8 +127,9 @@ public class MainSynth {
     
     fullPanel.setBackground(Color.yellow);
     
-    jFrame.setBounds(0, 0, 800, 600);   
+    jFrame.setBounds(0, 0, 790, 590);   
     jFrame.setVisible(true);
+    jFrame.setResizable(false);
     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE );
     jFrame.add(fullPanel);    
     
