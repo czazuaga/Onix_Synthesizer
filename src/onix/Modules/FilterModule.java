@@ -3,7 +3,6 @@ package onix.Modules;
 
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
-import com.jsyn.unitgen.FilterBiquadCommon;
 import com.jsyn.unitgen.FilterHighPass;
 import com.jsyn.unitgen.FilterLowPass;
 import com.jsyn.unitgen.LineOut;
@@ -30,18 +29,19 @@ public class FilterModule implements ActionListener {
     
     public JLabel led1,led2; 
 
-    private  KnobModule cutOffKnob,cutOffKnob2;
+    private  KnobModule cutOffLowPass,cutOffHighPass;
     
     private int filterNum =0;
     
     private JButton selectFilterButton = new JButton();
     
+    //Get instances of the modules to process
     private WhiteNoiseModule whiteNoiseModule;
+    private Osc1Module os1Module;
     
     public FilterLowPass filterLowPass= new FilterLowPass();
     public FilterHighPass filterHighPass= new FilterHighPass();
-    public FilterBiquadCommon mutableFilter= filterLowPass;
-    
+     
     private Synthesizer synth;
     
     private LineOut lineOutLow,lineOutHigh;
@@ -85,13 +85,13 @@ public class FilterModule implements ActionListener {
         filterHighPass.output.connect(0,this.lineOutHigh.input,1);//Left channel
         
          
-             cutOffKnob = new KnobModule(filterLowPass.frequency, jPanel, 0, 6000, 0,
+             cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 6000, 0,
             170,18,50,50);
              
-             cutOffKnob2 = new KnobModule(filterHighPass.frequency, jPanel, 0, 6000, 0,
+             cutOffHighPass = new KnobModule(filterHighPass.frequency, jPanel, 0, 10000, 0,
             170,18,50,50);
         
-             cutOffKnob2.setActive(false);
+             cutOffHighPass.setActive(false);
         
   
         selectFilterButton();
@@ -230,10 +230,12 @@ public class FilterModule implements ActionListener {
     
     if(filterNum==0){
 
-        cutOffKnob2.setActive(false);
-        cutOffKnob.setActive(true);
+        cutOffHighPass.setActive(false);
+        cutOffLowPass.setActive(true);
+        
         whiteNoiseModule.setFilterLowpass();
-         
+        os1Module.setFilterLowpass();
+        
         lineOutHigh.stop();
         lineOutLow.start();
         
@@ -242,10 +244,11 @@ public class FilterModule implements ActionListener {
         
     }else if(filterNum==1){
         
-        cutOffKnob.setActive(false);
-        cutOffKnob2.setActive(true);
+        cutOffLowPass.setActive(false);
+        cutOffHighPass.setActive(true);
         
         whiteNoiseModule.setFilterHighpass();
+        os1Module.setFilterHighpass();
         
         lineOutLow.stop();
         lineOutHigh.start();
@@ -255,9 +258,16 @@ public class FilterModule implements ActionListener {
         
     }  
     }
+   
     
+    //Get instances of the modules to process
     public void getNoiseModuleInstance(WhiteNoiseModule whiteNoiseModule){
     this.whiteNoiseModule=whiteNoiseModule;
+        
+    }
+    
+    public void getOsc1ModuleInstance(Osc1Module osc1Module){
+    this.os1Module=osc1Module;
         
     }
     

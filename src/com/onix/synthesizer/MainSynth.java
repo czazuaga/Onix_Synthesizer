@@ -1,5 +1,6 @@
 
 package com.onix.synthesizer;
+
 import StyleResources.Colors;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
@@ -12,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import onix.Modules.FilterModule;
 import onix.Modules.LogoModule;
+import onix.Modules.Osc1Module;
+import onix.Modules.Osc2Module;
 import onix.Modules.PresetsModule;
 import onix.Modules.WhiteNoiseModule;
 
@@ -72,8 +75,15 @@ LineOut myOut;
 
         WhiteNoiseModule whiteNoiseModule = new WhiteNoiseModule(rightPanel,
                 synth,filterModule);
+        
+        
+        Osc1Module osc1Module = new Osc1Module(leftPanel, synth, filterModule);
+        
+        Osc2Module osc2Module = new Osc2Module(leftPanel, synth, filterModule);
        
+        //Solution for pass the modules instances to the Filter Module
         filterModule.getNoiseModuleInstance(whiteNoiseModule);
+        filterModule.getOsc1ModuleInstance(osc1Module);
         
         PresetsModule presetsModule = new PresetsModule(topPanel);
     }
