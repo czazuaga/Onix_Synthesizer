@@ -3,7 +3,6 @@ package onix.Modules;
 
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
-import com.jsyn.ports.UnitInputPort;
 import com.jsyn.unitgen.FilterBiquadCommon;
 import com.jsyn.unitgen.FilterHighPass;
 import com.jsyn.unitgen.FilterLowPass;
@@ -31,13 +30,13 @@ public class FilterModule implements ActionListener {
     
     public JLabel led1,led2; 
 
-    private  KnobModule cutOffKnob;
+    private  KnobModule cutOffKnob,cutOffKnob2;
     
     private int filterNum =0;
     
     private JButton selectFilterButton = new JButton();
     
-    
+    private WhiteNoiseModule whiteNoiseModule;
     
     public FilterLowPass filterLowPass= new FilterLowPass();
     public FilterHighPass filterHighPass= new FilterHighPass();
@@ -45,31 +44,55 @@ public class FilterModule implements ActionListener {
     
     private Synthesizer synth;
     
-    private LineOut myout;
+    private LineOut lineOutLow,lineOutHigh;
     
+    
+   
     
     
     // Constructor -------------------------------------
     
     
     
-    public FilterModule (JPanel downPanel,Synthesizer mainSynth,LineOut myOut) {
+    public FilterModule (JPanel downPanel,Synthesizer mainSynth) {
 
         this.synth=mainSynth;
-        this.myout=myOut;
+        
+        
+        
+        lineOutHigh = new  LineOut();
+        lineOutLow = new  LineOut();
+        
+        synth.add(this.filterLowPass);
+        synth.add(this.filterHighPass);
+        synth.add(this.lineOutHigh);
+        synth.add(this.lineOutLow);
+        
+        lineOutLow.start();
+        
         
         
         jPanel=new JPanelFactory(downPanel,3,3, 252, 126, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
-     
-        synth.add(this.mutableFilter);
         
-        mutableFilter.output.connect(0,myout.input,0);//Right channel
-        mutableFilter.output.connect(0,myout.input,1);//Left channel
+        
        
-        cutOffKnob = new KnobModule(mutableFilter.frequency, jPanel, 0, 6000, 0,
+       
+        filterLowPass.output.connect(0,this.lineOutLow.input,0);//Right channel
+        filterLowPass.output.connect(0,this.lineOutLow.input,1);//Left channel
+        
+        filterHighPass.output.connect(0,this.lineOutHigh.input,0);//Right channel
+        filterHighPass.output.connect(0,this.lineOutHigh.input,1);//Left channel
+        
+         
+             cutOffKnob = new KnobModule(filterLowPass.frequency, jPanel, 0, 6000, 0,
             170,18,50,50);
-          
+             
+             cutOffKnob2 = new KnobModule(filterHighPass.frequency, jPanel, 0, 6000, 0,
+            170,18,50,50);
+        
+             cutOffKnob2.setActive(false);
+        
   
         selectFilterButton();
     
@@ -181,7 +204,7 @@ public class FilterModule implements ActionListener {
       
          if (ae.getActionCommand().equals("selectFilter")){
             
-             cambioDeFiltro();
+             
              
             if(getFilterType()==0){
     
@@ -198,6 +221,7 @@ public class FilterModule implements ActionListener {
               filterNum=0;
             }     
             System.out.println(getFilterType());
+            cambioDeFiltro();
         }
    
     }
@@ -205,10 +229,36 @@ public class FilterModule implements ActionListener {
     void cambioDeFiltro(){
     
     if(filterNum==0){
-  
-        }else{
 
-        }  
+        cutOffKnob2.setActive(false);
+        cutOffKnob.setActive(true);
+        whiteNoiseModule.setFilterLowpass();
+         
+        lineOutHigh.stop();
+        lineOutLow.start();
+        
+        ///////////////////////////
+        System.out.println("Se ha ejecutado filtro paso bajo");
+        
+    }else if(filterNum==1){
+        
+        cutOffKnob.setActive(false);
+        cutOffKnob2.setActive(true);
+        
+        whiteNoiseModule.setFilterHighpass();
+        
+        lineOutLow.stop();
+        lineOutHigh.start();
+        
+        ///////////////////////////
+        System.out.println("Se ha ejecutado filtro paso alto");
+        
+    }  
+    }
+    
+    public void getNoiseModuleInstance(WhiteNoiseModule whiteNoiseModule){
+    this.whiteNoiseModule=whiteNoiseModule;
+        
     }
     
 }

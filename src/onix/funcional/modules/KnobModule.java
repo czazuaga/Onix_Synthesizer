@@ -8,19 +8,24 @@ import javax.swing.JPanel;
 
 public class KnobModule {
 
-    RotaryController Knob;
+    private RotaryController Knob;
+    private UnitInputPort unitInputPort;
+    private double minValue,maxValue,defaulValue;
+    private PortBoundedRangeModel model;
     
 
     public KnobModule(UnitInputPort unitInputPort,JPanel jPanel,double minValue,
             double maxValue,double defaultValue,int xPos,int yPos,int width,
             int height) {
+        this.unitInputPort = unitInputPort;
+        this.minValue = minValue;
+        this.maxValue=maxValue;
+        this.defaulValue=defaultValue;
         
-     
-        
-        unitInputPort.setMinimum(minValue);
-        unitInputPort.setMaximum(maxValue);
+        this.unitInputPort.setMinimum(minValue);
+        this.unitInputPort.setMaximum(maxValue);
          
-        PortBoundedRangeModel model = new PortBoundedRangeModel(unitInputPort);
+        model = new PortBoundedRangeModel(this.unitInputPort);
         model.setDoubleValue(defaultValue);
    
         Knob = new RotaryController(model);
@@ -32,13 +37,15 @@ public class KnobModule {
         Knob.setKnobColor(Colors.DARK_GREY);
         Knob.setBounds(xPos, yPos, width, height);
         
-        
-    
-    
+
        jPanel.add(Knob);
  
     }
     
- 
     
+ public void setActive(boolean set){
+ Knob.setEnabled(set);
+ Knob.setVisible(set);
+ }
+ 
 }

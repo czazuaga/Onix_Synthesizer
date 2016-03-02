@@ -4,13 +4,7 @@ import StyleResources.Colors;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
 import com.jsyn.devices.AudioDeviceManager;
-import com.jsyn.unitgen.FilterBiquadCommon;
-import com.jsyn.unitgen.FilterLowPass;
-import com.jsyn.unitgen.FilterStateVariable;
 import com.jsyn.unitgen.LineOut;
-import com.jsyn.unitgen.UnitGenerator;
-import com.softsynth.shared.time.ScheduledCommand;
-import com.softsynth.shared.time.TimeStamp;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -65,10 +59,7 @@ LineOut myOut;
         
         synth.start( 44100, AudioDeviceManager.USE_DEFAULT_DEVICE, numInputChannels, AudioDeviceManager.USE_DEFAULT_DEVICE,
              numOutputChannels );     
-        
-        synth.add( myOut);
-        
-        myOut.start();
+  
         
     }
     
@@ -77,11 +68,13 @@ LineOut myOut;
     private void createModules () {
         LogoModule logoModule = new LogoModule(topPanel);
         
-        FilterModule filterModule = new FilterModule(downPanel, synth,myOut);
+        FilterModule filterModule = new FilterModule(downPanel, synth);
 
         WhiteNoiseModule whiteNoiseModule = new WhiteNoiseModule(rightPanel,
-                synth, filterModule.filterLowPass);
+                synth,filterModule);
        
+        filterModule.getNoiseModuleInstance(whiteNoiseModule);
+        
         PresetsModule presetsModule = new PresetsModule(topPanel);
     }
     
