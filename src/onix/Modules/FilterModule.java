@@ -6,6 +6,7 @@ import com.jsyn.Synthesizer;
 import com.jsyn.unitgen.FilterHighPass;
 import com.jsyn.unitgen.FilterLowPass;
 import com.jsyn.unitgen.LineOut;
+import com.jsyn.unitgen.MixerStereo;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,70 +22,52 @@ import onix.funcional.modules.KnobModule;
 
 public class FilterModule implements ActionListener {
     
-    private JPanelFactory jPanel;
-    
+    private JPanelFactory jPanel;    
     protected URL buttonURL,ledOnUrl,ledOffUrl;
-
-    protected Icon selectFilterButtonIcon,led1Icon,led2Icon;
-    
+    protected Icon selectFilterButtonIcon,led1Icon,led2Icon;  
     public JLabel led1,led2; 
-
     private  KnobModule cutOffLowPass,cutOffHighPass;
+    private JButton selectFilterButton = new JButton();
     
     private int filterNum =0;
     
-    private JButton selectFilterButton = new JButton();
     
     //Get instances of the modules to process
     private WhiteNoiseModule whiteNoiseModule;
     private Osc1Module os1Module;
     
+    
     public FilterLowPass filterLowPass= new FilterLowPass();
-    public FilterHighPass filterHighPass= new FilterHighPass();
-     
-    private Synthesizer synth;
-    
-    private LineOut lineOutLow,lineOutHigh;
-    
-    
-   
-    
-    
+    public FilterHighPass filterHighPass= new FilterHighPass();  
+    private Synthesizer synth;   
+    private LineOut lineOut= new  LineOut();;   
+    private MixerStereo mixer = new MixerStereo(2);
+
     // Constructor -------------------------------------
-    
-    
+
     
     public FilterModule (JPanel downPanel,Synthesizer mainSynth) {
 
         this.synth=mainSynth;
-        
-        
-        
-        lineOutHigh = new  LineOut();
-        lineOutLow = new  LineOut();
-        
+                   
         synth.add(this.filterLowPass);
         synth.add(this.filterHighPass);
-        synth.add(this.lineOutHigh);
-        synth.add(this.lineOutLow);
+        synth.add(this.lineOut);
         
-        lineOutLow.start();
-        
-        
-        
+        lineOut.start();
+                
         jPanel=new JPanelFactory(downPanel,3,3, 252, 126, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
         
-        
+   
+        filterLowPass.output.connect(mixer.input);
+
+        synth.add(mixer);
+        mixer.output.connect(0,this.lineOut.input,0);//Right channel
+        mixer.output.connect(0,this.lineOut.input,1);//Left channel
+        mixer.start();
        
        
-        filterLowPass.output.connect(0,this.lineOutLow.input,0);//Right channel
-        filterLowPass.output.connect(0,this.lineOutLow.input,1);//Left channel
-        
-        filterHighPass.output.connect(0,this.lineOutHigh.input,0);//Right channel
-        filterHighPass.output.connect(0,this.lineOutHigh.input,1);//Left channel
-        
-         
              cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 6000, 0,
             170,18,50,50);
              
@@ -230,19 +213,23 @@ public class FilterModule implements ActionListener {
     
     if(filterNum==0){
 
+        filterLowPass.output.connect(mixer.input);
+        filterHighPass.output.disconnect(mixer.input);
+        
         cutOffHighPass.setActive(false);
         cutOffLowPass.setActive(true);
         
         whiteNoiseModule.setFilterLowpass();
         os1Module.setFilterLowpass();
         
-        lineOutHigh.stop();
-        lineOutLow.start();
-        
+ 
         ///////////////////////////
         System.out.println("Se ha ejecutado filtro paso bajo");
         
     }else if(filterNum==1){
+        
+        filterLowPass.output.disconnect(mixer.input);
+        filterHighPass.output.connect(mixer.input);
         
         cutOffLowPass.setActive(false);
         cutOffHighPass.setActive(true);
@@ -250,9 +237,7 @@ public class FilterModule implements ActionListener {
         whiteNoiseModule.setFilterHighpass();
         os1Module.setFilterHighpass();
         
-        lineOutLow.stop();
-        lineOutHigh.start();
-        
+ 
         ///////////////////////////
         System.out.println("Se ha ejecutado filtro paso alto");
         

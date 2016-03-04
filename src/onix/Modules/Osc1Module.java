@@ -6,6 +6,9 @@ package onix.Modules;
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
 import com.jsyn.unitgen.SawtoothOscillator;
+import com.jsyn.unitgen.SineOscillator;
+import com.jsyn.unitgen.SquareOscillator;
+import com.jsyn.unitgen.TriangleOscillator;
 import com.jsyn.unitgen.UnitOscillator;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -25,19 +28,21 @@ import onix.funcional.modules.KnobModule;
 public class Osc1Module implements ActionListener {
     
     private  JPanelFactory jPanel;
+    public JLabel led1,led2,led3,led4,shapeFormsJLabel;
     
     protected URL buttonURL,ledOnUrl,ledOffUrl,shapesUrl;
     protected Icon selectOscShapeButtonIcon,shapesIcon,ledOnIcon,ledOffIcon;
     
-    public   UnitOscillator osc;
-    private  KnobModule semiToneKnob,ampKnob;
+    public   UnitOscillator sawOsc,squareOsc,triangleOsc,sineOsc;
+    
+    private  KnobModule sawPitchKnob,sawAmpKnob,squPitchKnob,squAmpKnob,
+            triPitchKnob,triAmpKnob,sinePitchKnob,sineAmpKnob;
+    
     private JButton selectFilterButton = new JButton();
     
     private Synthesizer synth;
     
     private int oscNum =0;
-    
-    public JLabel led1,led2,led3,led4,shapeFormsJLabel;
     
     private FilterModule filterModule;
     
@@ -50,21 +55,45 @@ public class Osc1Module implements ActionListener {
     this.filterModule=filterModule;
     this.synth=mainSynth;
     
-    osc = new SawtoothOscillator();
+    sawOsc = new SawtoothOscillator();
+    squareOsc = new SquareOscillator();
+    triangleOsc = new TriangleOscillator();
+    sineOsc = new SineOscillator();
     
-    synth.add(osc);
+    synth.add(sawOsc);
+    synth.add(squareOsc);
+    synth.add(triangleOsc);
+    synth.add(sineOsc);
     
-    osc.output.connect(filterModule.filterLowPass.input);
     
-    osc.start();
+    
+    sawOsc.output.connect(filterModule.filterLowPass.input);       
+    squareOsc.output.connect(filterModule.filterLowPass.input);       
+    triangleOsc.output.connect(filterModule.filterLowPass.input); 
+    sineOsc.output.connect(filterModule.filterLowPass.input);
+    
+    
+    
+    sawOsc.start();
+    squareOsc.start();
+    triangleOsc.start();
+    sineOsc.start();
         
     jPanel=new JPanelFactory(leftPanel,3,3, 252, 145, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
     
     
-    ampKnob = new KnobModule(osc.amplitude, jPanel, 0, 1, 0,175,11,50,50);
+    sawAmpKnob = new KnobModule(sawOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    sawPitchKnob = new KnobModule(sawOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
-    semiToneKnob = new KnobModule(osc.frequency, jPanel, 0, 300, 0,102,11,50,50);
+    squAmpKnob = new KnobModule(squareOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    squPitchKnob = new KnobModule(squareOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
+    
+   triAmpKnob = new KnobModule(triangleOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    triPitchKnob = new KnobModule(triangleOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
+    
+    sineAmpKnob = new KnobModule(sineOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    sinePitchKnob = new KnobModule(sineOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
     
     oscShapeUI();
@@ -150,13 +179,33 @@ public class Osc1Module implements ActionListener {
     
     
     public void setFilterLowpass(){
-    osc.output.disconnect(filterModule.filterHighPass.input);
-    osc.output.connect(filterModule.filterLowPass.input);
+    sawOsc.output.disconnect(filterModule.filterHighPass.input);
+    sawOsc.output.connect(filterModule.filterLowPass.input);
+    
+    squareOsc.output.disconnect(filterModule.filterHighPass.input);
+    squareOsc.output.connect(filterModule.filterLowPass.input);
+    
+    triangleOsc.output.disconnect(filterModule.filterHighPass.input);
+    triangleOsc.output.connect(filterModule.filterLowPass.input);
+    
+    sineOsc.output.disconnect(filterModule.filterHighPass.input);
+    sineOsc.output.connect(filterModule.filterLowPass.input);
+    
     }
     
     public void setFilterHighpass(){
-    osc.output.disconnect(filterModule.filterLowPass.input);
-    osc.output.connect(filterModule.filterHighPass.input);
+        
+    sawOsc.output.disconnect(filterModule.filterLowPass.input);
+    sawOsc.output.connect(filterModule.filterHighPass.input);
+    
+    squareOsc.output.disconnect(filterModule.filterLowPass.input);
+    squareOsc.output.connect(filterModule.filterHighPass.input);
+    
+    triangleOsc.output.disconnect(filterModule.filterLowPass.input);
+    triangleOsc.output.connect(filterModule.filterHighPass.input);
+    
+    sineOsc.output.disconnect(filterModule.filterLowPass.input);
+    sineOsc.output.connect(filterModule.filterHighPass.input);
     }
     
     
@@ -227,28 +276,87 @@ public class Osc1Module implements ActionListener {
     
     if(oscNum==0){
         
+        ////////////////
+        sineAmpKnob.setActive(false);
+        sinePitchKnob.setActive(false);
         
+        triAmpKnob.setActive(false);
+        triPitchKnob.setActive(false);
+        
+        squAmpKnob.setActive(false);
+        squPitchKnob.setActive(false);
+        
+        sawAmpKnob.setActive(true);
+        sawPitchKnob.setActive(true);
+        ////////////////
+        
+       
+             
         ///////////////////////////
         System.out.println("Se ha seleccionado diente de sierra");
         
     }else if(oscNum==1){
         
+        ////////////////
+        sineAmpKnob.setActive(false);
+        sinePitchKnob.setActive(false);
         
+        triAmpKnob.setActive(false);
+        triPitchKnob.setActive(false);
+        
+        squAmpKnob.setActive(true);
+        squPitchKnob.setActive(true);
+        
+        sawAmpKnob.setActive(false);
+        sawPitchKnob.setActive(false);
+        ////////////////
+        
+        
+       
         
         ///////////////////////////
         System.out.println("Se ha seleccionado onda cuadrada");
         
     }else if(oscNum==2){
         
+        ////////////////
+        sineAmpKnob.setActive(false);
+        sinePitchKnob.setActive(false);
         
+        triAmpKnob.setActive(true);
+        triPitchKnob.setActive(true);
+        
+        squAmpKnob.setActive(false);
+        squPitchKnob.setActive(false);
+        
+        sawAmpKnob.setActive(false);
+        sawPitchKnob.setActive(false);
+        ////////////////
+        
+        
+       
         
         ///////////////////////////
         System.out.println("Se ha seleccionado onda triangular");
         
     }else if(oscNum==3){
         
+         ////////////////
+        sineAmpKnob.setActive(true);
+        sinePitchKnob.setActive(true);
         
+        triAmpKnob.setActive(false);
+        triPitchKnob.setActive(false);
         
+        squAmpKnob.setActive(false);
+        squPitchKnob.setActive(false);
+        
+        sawAmpKnob.setActive(false);
+        sawPitchKnob.setActive(false);
+        ////////////////
+      
+     
+       
         ///////////////////////////
         System.out.println("Se ha seleccionado onda senoidal");
         
@@ -260,7 +368,7 @@ public class Osc1Module implements ActionListener {
     protected void selectOscButton () { 
  
         buttonURL = getClass().getResource("/images/button.png");
-  
+        
         selectOscShapeButtonIcon = new ImageIcon(buttonURL);
           
         selectFilterButton.addActionListener(this);
