@@ -40,8 +40,9 @@ public class FilterModule implements ActionListener {
     public FilterLowPass filterLowPass= new FilterLowPass();
     public FilterHighPass filterHighPass= new FilterHighPass();  
     private Synthesizer synth;   
-    private LineOut lineOut= new  LineOut();;   
-    private MixerStereo mixer = new MixerStereo(2);
+    public LineOut lineOut= new  LineOut();;   
+    public MixerStereo mixer = new MixerStereo(2);
+    public MixerStereo mixerOut = new MixerStereo(2);
 
     // Constructor -------------------------------------
 
@@ -63,15 +64,18 @@ public class FilterModule implements ActionListener {
         filterLowPass.output.connect(mixer.input);
 
         synth.add(mixer);
+        synth.add(mixerOut);
+        
         mixer.output.connect(0,this.lineOut.input,0);//Right channel
         mixer.output.connect(0,this.lineOut.input,1);//Left channel
         mixer.start();
+        mixerOut.start();
        
        
-             cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 6000, 0,
+             cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 20000, 0,
             170,18,50,50);
              
-             cutOffHighPass = new KnobModule(filterHighPass.frequency, jPanel, 0, 10000, 0,
+             cutOffHighPass = new KnobModule(filterHighPass.frequency, jPanel, 0, 22000, 0,
             170,18,50,50);
         
              cutOffHighPass.setActive(false);

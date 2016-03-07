@@ -7,16 +7,22 @@ import com.jsyn.Synthesizer;
 import com.jsyn.devices.AudioDeviceManager;
 import com.jsyn.unitgen.LineOut;
 import java.awt.Color;
+import java.io.IOException;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import onix.Modules.AmpEnvelopeModule;
 import onix.Modules.FilterModule;
 import onix.Modules.LogoModule;
 import onix.Modules.Osc1Module;
 import onix.Modules.Osc2Module;
 import onix.Modules.PresetsModule;
 import onix.Modules.WhiteNoiseModule;
+import onix.funcional.modules.MidiControl;
+import onix.funcional.modules.MidiHandler;
+
 
 
 public class MainSynth {
@@ -28,11 +34,17 @@ JPanel fullPanel,topPanel,downPanel,leftPanel,centerPanel,rightPanel;
 Synthesizer synth;
 LineOut myOut;
     
+    MidiHandler midiTest;
+    MidiControl midiControl;
     
-    void MainSynt() {
+
+    void MainSynt() throws MidiUnavailableException, IOException, InterruptedException {
         
         initComoponents(); 
         
+       //midiTest = new MidiHandler();
+        midiControl = new MidiControl();
+        midiControl.test();
     }
             
 
@@ -80,6 +92,9 @@ LineOut myOut;
         Osc1Module osc1Module = new Osc1Module(leftPanel, synth, filterModule);
         
         Osc2Module osc2Module = new Osc2Module(leftPanel, synth, filterModule);
+        
+        AmpEnvelopeModule ampEnvelopeModule = new AmpEnvelopeModule(downPanel,
+                synth, filterModule);
        
         //Solution for pass the modules instances to the Filter Module
         filterModule.getNoiseModuleInstance(whiteNoiseModule);
