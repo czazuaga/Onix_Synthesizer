@@ -66,8 +66,11 @@ public class FilterModule implements ActionListener {
         synth.add(mixer);
         synth.add(mixerOut);
         
-        mixer.output.connect(0,this.lineOut.input,0);//Right channel
-        mixer.output.connect(0,this.lineOut.input,1);//Left channel
+        mixer.output.connect(0,mixerOut.input,0);
+        mixer.output.connect(0,mixerOut.input,1);
+        
+        mixerOut.output.connect(0,this.lineOut.input,0);//Right channel
+        mixerOut.output.connect(0,this.lineOut.input,1);//Left channel
         mixer.start();
         mixerOut.start();
        

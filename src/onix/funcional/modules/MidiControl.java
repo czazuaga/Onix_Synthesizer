@@ -19,11 +19,11 @@ import com.jsyn.unitgen.LineOut;
 import com.jsyn.unitgen.PowerOfTwo; 
 import com.jsyn.unitgen.SawtoothOscillator;
 import com.jsyn.unitgen.SineOscillator; 
-import com.jsyn.unitgen.SquareOscillator;
-import com.jsyn.unitgen.TriangleOscillator;
 import com.jsyn.unitgen.UnitOscillator; 
 import com.jsyn.util.VoiceAllocator; 
 import com.softsynth.shared.time.TimeStamp; 
+import onix.Modules.AmpEnvelopeModule;
+import onix.Modules.Osc1Module;
  
 /**
  * Connect a USB MIDI Keyboard to the internal MIDI Synthesizer 
@@ -36,7 +36,7 @@ public class MidiControl
 { 
  private static final int MAX_VOICES = 8; 
  private Synthesizer synth; 
- private VoiceAllocator allocator,allSaw,allSquare,allTriangle,allSine; 
+ private VoiceAllocator allocatorSaw1,allocatorSqu1,allocatorTri1,allocatorSin1,allocatorMod;
  private LineOut lineOut; 
  private double vibratoRate = 5.0; 
  private double vibratoDepth = 0.0; 
@@ -46,11 +46,9 @@ public class MidiControl
  private MessageParser messageParser; 
  
  private SubtractiveSynthVoice[] voices; 
- private SawtoothOscillator[] sawArray;
- private SquareOscillator[] squareArray;
- private TriangleOscillator[] triangleArray;
- private SineOscillator[] sineArray;
+ private SineOscillator[] ModSine = new SineOscillator[1];
 
+ private Osc1Module oscModule ;
 
  
  // Write a Receiver to get the messages from a Transmitter. 
@@ -132,7 +130,13 @@ public class MidiControl
   @Override 
   public void noteOff( int channel, int noteNumber, int velocity ) 
   { 
-   allocator.noteOff( noteNumber, synth.createTimeStamp() ); 
+   allocatorSaw1.noteOff( noteNumber, synth.createTimeStamp() ); 
+   allocatorSqu1.noteOff( noteNumber, synth.createTimeStamp() ); 
+   allocatorTri1.noteOff( noteNumber, synth.createTimeStamp() ); 
+   allocatorSin1.noteOff( noteNumber, synth.createTimeStamp() ); 
+   
+   
+   
   } 
  
   @Override 
@@ -141,7 +145,12 @@ public class MidiControl
    double frequency = convertPitchToFrequency( noteNumber ); 
    double amplitude = velocity / (4 * 128.0); 
    TimeStamp timeStamp = synth.createTimeStamp(); 
-   allocator.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
+   allocatorSaw1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
+   allocatorSqu1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
+   allocatorTri1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
+   allocatorSin1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
+   
+  
   } 
  
   public void pitchBend( int channel, int bend ) 
@@ -167,20 +176,24 @@ public class MidiControl
      
      
      
-  synth = JSyn.createSynthesizer(); 
+  
  
   // Add an output. 
-  synth.add( lineOut = new LineOut() ); 
+  //synth.add( lineOut = new LineOut() ); 
  
+  /*
   synth.add( powerOfTwo = new PowerOfTwo() ); 
   synth.add( lfo = new SineOscillator() ); 
   // Sums pitch modulation. 
   lfo.output.connect( powerOfTwo.input ); 
   lfo.amplitude.set( vibratoDepth ); 
   lfo.frequency.set( vibratoRate ); 
- 
+ */
+  /*
   voices = new SubtractiveSynthVoice[MAX_VOICES]; 
   for( int i = 0; i < MAX_VOICES; i++ ) 
+ 
+  
   { 
    SubtractiveSynthVoice voice = new SubtractiveSynthVoice(); 
    synth.add( voice ); 
@@ -189,15 +202,19 @@ public class MidiControl
    voice.getOutput().connect( 0, lineOut.input, 1 ); 
    voices[i] = voice; 
   } 
+  */
   
-  
-  allocator = new VoiceAllocator( voices ); 
+  allocatorSaw1 = new VoiceAllocator(oscModule.sawOscillatorsArray); 
+  allocatorSqu1 = new VoiceAllocator(oscModule.squareOscillatorsArray);
+  allocatorTri1 = new VoiceAllocator(oscModule.triangleOscillatorsArray);
+  allocatorSin1 = new VoiceAllocator(oscModule.sineOscillatorsArray);
+  allocatorMod = new VoiceAllocator(ModSine);
  
   // Start synthesizer using default stereo output at 44100 Hz. 
-  synth.start(); 
+  //synth.start(); //
   // We only need to start the LineOut. It will pull data from the 
   // oscillator. 
-  lineOut.start(); 
+  //lineOut.start(); //
  
   // Get synthesizer time in seconds. 
   double timeNow = synth.getCurrentTime(); 
@@ -206,13 +223,14 @@ public class MidiControl
   double time = timeNow + 0.5; 
  
  } 
+
+ public void voicesConfig (Osc1Module osc1Module,Synthesizer synth) {
  
- public void totalVoices () {
- 
+     this.synth=synth;
+     this.oscModule=osc1Module;
      
-             
-     
- }
- 
+   
+ } 
+
 }
 

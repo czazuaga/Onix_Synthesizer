@@ -38,17 +38,20 @@ LineOut myOut;
     MidiControl midiControl;
     
 
-    void MainSynt() throws MidiUnavailableException, IOException, InterruptedException {
+    void MainSynt() throws InterruptedException, MidiUnavailableException, IOException {
+        
+        
         
         initComoponents(); 
         
        //midiTest = new MidiHandler();
-        midiControl = new MidiControl();
-        midiControl.test();
+       
+       
+        
     }
             
 
-    private void initComoponents() {
+    private void initComoponents() throws IOException, InterruptedException, MidiUnavailableException  {
        //Init synth components
         myOut = new LineOut();
         synth = JSyn.createSynthesizer();   
@@ -80,7 +83,7 @@ LineOut myOut;
     
     
     
-    private void createModules () {
+    private void createModules () throws MidiUnavailableException, IOException, InterruptedException {
         LogoModule logoModule = new LogoModule(topPanel);
         
         FilterModule filterModule = new FilterModule(downPanel, synth);
@@ -94,17 +97,25 @@ LineOut myOut;
         Osc2Module osc2Module = new Osc2Module(leftPanel, synth, filterModule);
         
         AmpEnvelopeModule ampEnvelopeModule = new AmpEnvelopeModule(downPanel,
-                synth, filterModule);
+                synth, filterModule,osc1Module);
        
         //Solution for pass the modules instances to the Filter Module
         filterModule.getNoiseModuleInstance(whiteNoiseModule);
         filterModule.getOsc1ModuleInstance(osc1Module);
         
         PresetsModule presetsModule = new PresetsModule(topPanel);
+        
+        midiControl = new MidiControl();
+        midiControl.voicesConfig(osc1Module,synth);
+        midiControl.test();
+        
+        
+        
+        
     }
     
     
-    private void createPanels () {
+    private void createPanels () throws IOException, InterruptedException, MidiUnavailableException {
         
         topPanel.setBackground(Color.BLACK);
         topPanel.setBounds(0, 0,784, 132);

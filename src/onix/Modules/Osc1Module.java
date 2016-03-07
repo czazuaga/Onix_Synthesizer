@@ -5,6 +5,7 @@ package onix.Modules;
 
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
+import com.jsyn.unitgen.MixerStereo;
 import com.jsyn.unitgen.SawtoothOscillator;
 import com.jsyn.unitgen.SineOscillator;
 import com.jsyn.unitgen.SquareOscillator;
@@ -46,6 +47,26 @@ public class Osc1Module implements ActionListener {
     
     private FilterModule filterModule;
     
+    //Config Oscillators : INIT
+    
+    public static final int MAX_VOICES=8;
+    
+    public MixerStereo mixerAllOscillators = new MixerStereo(4);
+    
+    private MixerStereo mixerSawOscillators = new MixerStereo(MAX_VOICES);
+    private MixerStereo mixerSquareOscillators = new MixerStereo(MAX_VOICES);
+    private MixerStereo mixerTriangleOscillators = new MixerStereo(MAX_VOICES);
+    private MixerStereo mixerSineOscillators = new MixerStereo(MAX_VOICES);
+    
+    public SawtoothOscillator[] sawOscillatorsArray = new SawtoothOscillator[MAX_VOICES];
+    public SquareOscillator[] squareOscillatorsArray = new SquareOscillator[MAX_VOICES];
+    public TriangleOscillator[] triangleOscillatorsArray = new TriangleOscillator[MAX_VOICES];
+    public SineOscillator[] sineOscillatorsArray = new SineOscillator[MAX_VOICES];
+    
+    
+    //------------------------
+    
+    
     
     //Constructor
     
@@ -54,6 +75,62 @@ public class Osc1Module implements ActionListener {
         
     this.filterModule=filterModule;
     this.synth=mainSynth;
+    
+    
+     //Config Oscillators 
+    
+     //Saw  
+    for (int i =0;i<MAX_VOICES;i++){
+     
+    sawOscillatorsArray[i] = new SawtoothOscillator();
+    synth.add(sawOscillatorsArray[i]);
+    sawOscillatorsArray[i].output.connect(mixerSawOscillators);
+    sawOscillatorsArray[i].amplitude.set(0);    
+    sawOscillatorsArray[i].start();
+       
+    }
+    
+    //Square
+    for (int i =0;i<MAX_VOICES;i++){
+     
+    squareOscillatorsArray[i] = new SquareOscillator();
+    synth.add(squareOscillatorsArray[i]);
+    squareOscillatorsArray[i].amplitude.set(0);
+    squareOscillatorsArray[i].output.connect(mixerSquareOscillators);
+        
+    }
+    
+    //Triangle
+    for (int i =0;i<MAX_VOICES;i++){
+     
+    triangleOscillatorsArray[i] = new TriangleOscillator();
+    synth.add(triangleOscillatorsArray[i]);
+    triangleOscillatorsArray[i].amplitude.set(0);
+    triangleOscillatorsArray[i].output.connect(mixerTriangleOscillators);
+        
+    }
+    
+    //Sine
+    for (int i =0;i<MAX_VOICES;i++){
+     
+    sineOscillatorsArray[i] = new SineOscillator();
+    synth.add(sineOscillatorsArray[i]);
+    sineOscillatorsArray[i].amplitude.set(0);
+    sineOscillatorsArray[i].output.connect(mixerSineOscillators);
+        
+    }
+  
+    //Connect the oscillators outputs to the Osc1Module main mixer 
+    
+        mixerSawOscillators.output.connect(mixerAllOscillators.input);
+        mixerSquareOscillators.output.connect(mixerAllOscillators.input);
+        mixerTriangleOscillators.output.connect(mixerAllOscillators.input);
+        mixerSineOscillators.output.connect(mixerAllOscillators.input);
+        
+     //--------------------------
+     
+    mixerAllOscillators.output.connect(filterModule.filterLowPass.input); 
+    
     
     sawOsc = new SawtoothOscillator();
     squareOsc = new SquareOscillator();
@@ -67,32 +144,22 @@ public class Osc1Module implements ActionListener {
     
     
     
-    sawOsc.output.connect(filterModule.filterLowPass.input);       
-    squareOsc.output.connect(filterModule.filterLowPass.input);       
-    triangleOsc.output.connect(filterModule.filterLowPass.input); 
-    sineOsc.output.connect(filterModule.filterLowPass.input);
-    
-    
-    
-    sawOsc.start();
-    squareOsc.start();
-    triangleOsc.start();
-    sineOsc.start();
+
         
     jPanel=new JPanelFactory(leftPanel,3,3, 252, 145, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
     
     
-    sawAmpKnob = new KnobModule(sawOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    sawAmpKnob = new KnobModule(mixerSawOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
     sawPitchKnob = new KnobModule(sawOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
-    squAmpKnob = new KnobModule(squareOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    squAmpKnob = new KnobModule(mixerSquareOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
     squPitchKnob = new KnobModule(squareOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
-   triAmpKnob = new KnobModule(triangleOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+   triAmpKnob = new KnobModule(mixerTriangleOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
     triPitchKnob = new KnobModule(triangleOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
-    sineAmpKnob = new KnobModule(sineOsc.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+    sineAmpKnob = new KnobModule(mixerSineOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
     sinePitchKnob = new KnobModule(sineOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
     
     
@@ -179,33 +246,17 @@ public class Osc1Module implements ActionListener {
     
     
     public void setFilterLowpass(){
-    sawOsc.output.disconnect(filterModule.filterHighPass.input);
-    sawOsc.output.connect(filterModule.filterLowPass.input);
-    
-    squareOsc.output.disconnect(filterModule.filterHighPass.input);
-    squareOsc.output.connect(filterModule.filterLowPass.input);
-    
-    triangleOsc.output.disconnect(filterModule.filterHighPass.input);
-    triangleOsc.output.connect(filterModule.filterLowPass.input);
-    
-    sineOsc.output.disconnect(filterModule.filterHighPass.input);
-    sineOsc.output.connect(filterModule.filterLowPass.input);
-    
+        
+    mixerAllOscillators.output.disconnect(filterModule.filterHighPass.input);
+   mixerAllOscillators.output.connect(filterModule.filterLowPass.input);
+       
     }
     
     public void setFilterHighpass(){
         
-    sawOsc.output.disconnect(filterModule.filterLowPass.input);
-    sawOsc.output.connect(filterModule.filterHighPass.input);
-    
-    squareOsc.output.disconnect(filterModule.filterLowPass.input);
-    squareOsc.output.connect(filterModule.filterHighPass.input);
-    
-    triangleOsc.output.disconnect(filterModule.filterLowPass.input);
-    triangleOsc.output.connect(filterModule.filterHighPass.input);
-    
-    sineOsc.output.disconnect(filterModule.filterLowPass.input);
-    sineOsc.output.connect(filterModule.filterHighPass.input);
+    mixerAllOscillators.output.disconnect(filterModule.filterLowPass.input);
+   mixerAllOscillators.output.connect(filterModule.filterHighPass.input);
+        
     }
     
     
@@ -276,7 +327,7 @@ public class Osc1Module implements ActionListener {
     
     if(oscNum==0){
         
-        ////////////////
+
         sineAmpKnob.setActive(false);
         sinePitchKnob.setActive(false);
         
@@ -288,16 +339,11 @@ public class Osc1Module implements ActionListener {
         
         sawAmpKnob.setActive(true);
         sawPitchKnob.setActive(true);
-        ////////////////
-        
-       
-             
-        ///////////////////////////
-        System.out.println("Se ha seleccionado diente de sierra");
+
         
     }else if(oscNum==1){
         
-        ////////////////
+
         sineAmpKnob.setActive(false);
         sinePitchKnob.setActive(false);
         
@@ -309,17 +355,11 @@ public class Osc1Module implements ActionListener {
         
         sawAmpKnob.setActive(false);
         sawPitchKnob.setActive(false);
-        ////////////////
-        
-        
-       
-        
-        ///////////////////////////
-        System.out.println("Se ha seleccionado onda cuadrada");
+
         
     }else if(oscNum==2){
         
-        ////////////////
+
         sineAmpKnob.setActive(false);
         sinePitchKnob.setActive(false);
         
@@ -331,17 +371,11 @@ public class Osc1Module implements ActionListener {
         
         sawAmpKnob.setActive(false);
         sawPitchKnob.setActive(false);
-        ////////////////
-        
-        
-       
-        
-        ///////////////////////////
-        System.out.println("Se ha seleccionado onda triangular");
+
         
     }else if(oscNum==3){
         
-         ////////////////
+
         sineAmpKnob.setActive(true);
         sinePitchKnob.setActive(true);
         
@@ -353,13 +387,7 @@ public class Osc1Module implements ActionListener {
         
         sawAmpKnob.setActive(false);
         sawPitchKnob.setActive(false);
-        ////////////////
-      
-     
-       
-        ///////////////////////////
-        System.out.println("Se ha seleccionado onda senoidal");
-        
+    
     }        
     }
     
@@ -383,5 +411,7 @@ public class Osc1Module implements ActionListener {
     }
     
     //---------------------------------------------------
+    
+    
     
 }

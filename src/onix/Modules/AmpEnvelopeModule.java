@@ -18,16 +18,18 @@ public class AmpEnvelopeModule {
 
 private KnobModule attackKnob,decayKnob,sustainKnob,releaseKnob;
 private JPanelFactory jPanel;
-private EnvelopeDAHDSR envelope = new EnvelopeDAHDSR();
+public EnvelopeDAHDSR envelope = new EnvelopeDAHDSR();
 
 private FilterModule filterModule;
-
+private Osc1Module osc1Module;
+public SineOscillator gatingOsc;
 
     
 public AmpEnvelopeModule (JPanel downPanel,Synthesizer mainSynth,
-            FilterModule filterModule){
+            FilterModule filterModule,Osc1Module osc1Module){
 
-this.filterModule= filterModule;    
+this.filterModule = filterModule; 
+this.osc1Module = osc1Module;
     
 jPanel = new JPanelFactory(downPanel, 255, 3, 291, 126,
         Colors.DARK_BLUE, 1, Colors.CLEAN_WHITE);
@@ -40,15 +42,16 @@ createKnobs ();
 envelope.delay.set(0);
 
 
-    SineOscillator gatingOsc;
+    
 mainSynth.add( gatingOsc = new SineOscillator() );
-//gatingOsc.frequency.setup( 0.001, 5, 10.0 );
-	//gatingOsc.frequency.setName("Rate");
+gatingOsc.frequency.setup( 0.001, 0.001, 10.0 );
+gatingOsc.frequency.setName("Rate");
 
 
 //gatingOsc.output.connect(envelope.input);
 
-//envelope.output.connect(filterModule.filterLowPass.amplitude);
+//envelope.output.connect(filterModule.mixerOut.amplitude);
+
 
 
 //.output.connect(0,this.lineOut.input,0);//Right channel
