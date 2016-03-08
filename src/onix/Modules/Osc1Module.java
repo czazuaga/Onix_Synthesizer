@@ -120,6 +120,8 @@ public class Osc1Module implements ActionListener {
         
     }
   
+    
+    
     //Connect the oscillators outputs to the Osc1Module main mixer 
     
         mixerSawOscillators.output.connect(mixerAllOscillators.input);
@@ -150,18 +152,14 @@ public class Osc1Module implements ActionListener {
             1, Colors.CRUNCH_WHITE);
     
     
-    sawAmpKnob = new KnobModule(mixerSawOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
-    sawPitchKnob = new KnobModule(sawOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
-    
-    squAmpKnob = new KnobModule(mixerSquareOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
-    squPitchKnob = new KnobModule(squareOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
-    
+   sawAmpKnob = new KnobModule(mixerSawOscillators.amplitude, jPanel, 0, 1, 1,175,11,50,50);    
+       
+   squAmpKnob = new KnobModule(mixerSquareOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
+   
    triAmpKnob = new KnobModule(mixerTriangleOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
-    triPitchKnob = new KnobModule(triangleOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
-    
+       
     sineAmpKnob = new KnobModule(mixerSineOscillators.amplitude, jPanel, 0, 1, 0,175,11,50,50);    
-    sinePitchKnob = new KnobModule(sineOsc.frequency, jPanel, 0, 300, 0,102,11,50,50);
-    
+ 
     
     oscShapeUI();
     
@@ -181,13 +179,7 @@ public class Osc1Module implements ActionListener {
         jLabelModuleName.setForeground(Colors.CLEAN_WHITE);
         jPanel.add(jLabelModuleName);
         
-        
-        JLabel jLabelKnobName = new JLabel("SEMI");
-        
-        jLabelKnobName.setFont(new Font("2Tech", 1, 11));
-        jLabelKnobName.setBounds(110, 56, 40, 32);
-        jLabelKnobName.setForeground(Colors.BRIGHT_BLUE);
-        jPanel.add(jLabelKnobName);
+          
         
         JLabel jLabelHP = new JLabel("AMP");
         
@@ -328,65 +320,40 @@ public class Osc1Module implements ActionListener {
     if(oscNum==0){
         
 
-        sineAmpKnob.setActive(false);
-        sinePitchKnob.setActive(false);
-        
-        triAmpKnob.setActive(false);
-        triPitchKnob.setActive(false);
-        
-        squAmpKnob.setActive(false);
-        squPitchKnob.setActive(false);
-        
+        sineAmpKnob.setActive(false);       
+        triAmpKnob.setActive(false);             
+        squAmpKnob.setActive(false);       
         sawAmpKnob.setActive(true);
-        sawPitchKnob.setActive(true);
+       
 
         
     }else if(oscNum==1){
         
 
-        sineAmpKnob.setActive(false);
-        sinePitchKnob.setActive(false);
-        
-        triAmpKnob.setActive(false);
-        triPitchKnob.setActive(false);
-        
-        squAmpKnob.setActive(true);
-        squPitchKnob.setActive(true);
-        
+        sineAmpKnob.setActive(false);               
+        triAmpKnob.setActive(false);            
+        squAmpKnob.setActive(true);        
         sawAmpKnob.setActive(false);
-        sawPitchKnob.setActive(false);
+        
 
         
     }else if(oscNum==2){
         
 
-        sineAmpKnob.setActive(false);
-        sinePitchKnob.setActive(false);
-        
-        triAmpKnob.setActive(true);
-        triPitchKnob.setActive(true);
-        
-        squAmpKnob.setActive(false);
-        squPitchKnob.setActive(false);
-        
+        sineAmpKnob.setActive(false);        
+        triAmpKnob.setActive(true);       
+        squAmpKnob.setActive(false);       
         sawAmpKnob.setActive(false);
-        sawPitchKnob.setActive(false);
 
         
     }else if(oscNum==3){
         
 
-        sineAmpKnob.setActive(true);
-        sinePitchKnob.setActive(true);
-        
-        triAmpKnob.setActive(false);
-        triPitchKnob.setActive(false);
-        
+        sineAmpKnob.setActive(true);       
+        triAmpKnob.setActive(false);        
         squAmpKnob.setActive(false);
-        squPitchKnob.setActive(false);
-        
         sawAmpKnob.setActive(false);
-        sawPitchKnob.setActive(false);
+
     
     }        
     }

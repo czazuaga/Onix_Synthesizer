@@ -9,7 +9,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException; 
 import javax.sound.midi.Receiver; 
  
-import com.jsyn.JSyn; 
 import com.jsyn.Synthesizer; 
 import com.jsyn.devices.javasound.MidiDeviceTools; 
 import com.jsyn.instruments.SubtractiveSynthVoice; 
@@ -17,12 +16,11 @@ import com.jsyn.midi.MessageParser;
 import com.jsyn.midi.MidiConstants; 
 import com.jsyn.unitgen.LineOut; 
 import com.jsyn.unitgen.PowerOfTwo; 
-import com.jsyn.unitgen.SawtoothOscillator;
 import com.jsyn.unitgen.SineOscillator; 
 import com.jsyn.unitgen.UnitOscillator; 
 import com.jsyn.util.VoiceAllocator; 
 import com.softsynth.shared.time.TimeStamp; 
-import onix.Modules.AmpEnvelopeModule;
+import onix.Modules.LfoModule;
 import onix.Modules.Osc1Module;
  
 /**
@@ -49,7 +47,7 @@ public class MidiControl
  private SineOscillator[] ModSine = new SineOscillator[1];
 
  private Osc1Module oscModule ;
-
+ private LfoModule lfoModule;
  
  // Write a Receiver to get the messages from a Transmitter. 
  class CustomReceiver implements Receiver 
@@ -135,8 +133,7 @@ public class MidiControl
    allocatorTri1.noteOff( noteNumber, synth.createTimeStamp() ); 
    allocatorSin1.noteOff( noteNumber, synth.createTimeStamp() ); 
    
-   
-   
+ 
   } 
  
   @Override 
@@ -150,7 +147,7 @@ public class MidiControl
    allocatorTri1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
    allocatorSin1.noteOn( noteNumber, frequency, amplitude, timeStamp  ); 
    
-  
+
   } 
  
   public void pitchBend( int channel, int bend ) 
@@ -224,11 +221,11 @@ public class MidiControl
  
  } 
 
- public void voicesConfig (Osc1Module osc1Module,Synthesizer synth) {
+ public void voicesConfig (Osc1Module osc1Module,Synthesizer synth,LfoModule lfoModule) {
  
      this.synth=synth;
      this.oscModule=osc1Module;
-     
+     this.lfoModule=lfoModule;
    
  } 
 

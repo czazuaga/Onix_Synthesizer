@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import onix.Modules.AmpEnvelopeModule;
 import onix.Modules.FilterModule;
+import onix.Modules.LfoModule;
 import onix.Modules.LogoModule;
 import onix.Modules.Osc1Module;
 import onix.Modules.Osc2Module;
@@ -105,8 +106,10 @@ LineOut myOut;
         
         PresetsModule presetsModule = new PresetsModule(topPanel);
         
+        LfoModule lfoModule = new LfoModule(rightPanel, synth, filterModule,ampEnvelopeModule);
+        
         midiControl = new MidiControl();
-        midiControl.voicesConfig(osc1Module,synth);
+        midiControl.voicesConfig(osc1Module,synth,lfoModule);
         midiControl.test();
         
         

@@ -75,10 +75,10 @@ public class FilterModule implements ActionListener {
         mixerOut.start();
        
        
-             cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 20000, 0,
+             cutOffLowPass = new KnobModule(filterLowPass.frequency, jPanel, 0, 20000, 20000,
             170,18,50,50);
              
-             cutOffHighPass = new KnobModule(filterHighPass.frequency, jPanel, 0, 22000, 0,
+             cutOffHighPass = new KnobModule(filterHighPass.frequency, jPanel, 100, 22000, 0,
             170,18,50,50);
         
              cutOffHighPass.setActive(false);

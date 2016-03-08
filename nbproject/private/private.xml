@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/com/onix/synthesizer/OnixSynthesizer.java</file>
+            <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/Modules/LfoModule.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/Modules/WhiteNoiseModule.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/Modules/FilterModule.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/funcional/modules/MidiControl.java</file>
-            <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/funcional/modules/MidiHandler.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/Modules/AmpEnvelopeModule.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/com/onix/synthesizer/MainSynth.java</file>
             <file>file:/C:/Users/Carlos%20Zamora/Documents/NetBeansProjects/PxelSynth/src/onix/Modules/Osc1Module.java</file>
