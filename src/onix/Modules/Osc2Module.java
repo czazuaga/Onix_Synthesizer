@@ -41,7 +41,7 @@ private  JPanelFactory jPanel;
     this.filterModule=filterModule;
     this.synth=mainSynth;
         
-    jPanel=new JPanelFactory(leftPanel,3,148, 252, 145, Colors.DARK_BLUE,
+    jPanel=new JPanelFactory(leftPanel,3,148, 252, 146, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
     
     }

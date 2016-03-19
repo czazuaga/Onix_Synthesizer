@@ -19,6 +19,7 @@ import onix.Modules.LfoModule;
 import onix.Modules.LogoModule;
 import onix.Modules.Osc1Module;
 import onix.Modules.Osc2Module;
+import onix.Modules.OscilloscopeModule;
 import onix.Modules.PolyphonyModule;
 import onix.Modules.WhiteNoiseModule;
 import onix.funcional.modules.MidiControl;
@@ -114,7 +115,7 @@ LineOut myOut;
         
         PolyphonyModule polyphonyModule = new PolyphonyModule(topPanel,midiControl);
         
-        
+        OscilloscopeModule oscilloscopeModule = new OscilloscopeModule(centerPanel,synth,filterModule, whiteNoiseModule);
     }
     
     
@@ -122,23 +123,23 @@ LineOut myOut;
         
         topPanel.setBackground(Color.BLACK);
         topPanel.setBounds(0, 0,784, 132);
-        topPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));   
+        topPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));   
         
         downPanel.setBackground(Color.BLUE);
         downPanel.setBounds(0, 429,784, 132);
-        downPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));
+        downPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
    
         leftPanel.setBackground(Color.RED);
         leftPanel.setBounds(0, 132,256, 297);
-        leftPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));
+        leftPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
  
         centerPanel.setBackground(Color.PINK);
         centerPanel.setBounds(256, 132,290, 297);
-        centerPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));
+        centerPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
           
         rightPanel.setBackground(Color.ORANGE);
         rightPanel.setBounds(546, 132,238, 297);
-        rightPanel.setBorder(BorderFactory.createLineBorder(Colors.SWEET_PINK, 3));
+        rightPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
         
         configSynth();
         
