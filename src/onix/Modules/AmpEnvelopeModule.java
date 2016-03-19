@@ -74,11 +74,9 @@ protected void  addLabels () {
     }
     
 private void createKnobs () {
-attackKnob = new KnobModule(envelope.attack, jPanel, 0, 1, 0, 22, 38, 50, 50);
-decayKnob = new KnobModule(envelope.sustain, jPanel, 0, 1, 0.5, 87, 38, 50, 50);
-
-
     
+attackKnob = new KnobModule(envelope.attack, jPanel, 0, 1, 0, 22, 38, 50, 50);
+decayKnob = new KnobModule(envelope.sustain, jPanel, 0, 1, 0.5, 87, 38, 50, 50);   
     
 }
 

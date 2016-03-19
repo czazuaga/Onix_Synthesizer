@@ -22,6 +22,7 @@ import com.jsyn.util.VoiceAllocator;
 import com.softsynth.shared.time.TimeStamp; 
 import onix.Modules.LfoModule;
 import onix.Modules.Osc1Module;
+import onix.Modules.PolyphonyModule;
  
 /**
  * Connect a USB MIDI Keyboard to the internal MIDI Synthesizer 
@@ -48,6 +49,7 @@ public class MidiControl
 
  private Osc1Module oscModule ;
  private LfoModule lfoModule;
+
  
  // Write a Receiver to get the messages from a Transmitter. 
  class CustomReceiver implements Receiver 
@@ -226,8 +228,25 @@ public class MidiControl
      this.synth=synth;
      this.oscModule=osc1Module;
      this.lfoModule=lfoModule;
+     
+     
    
  } 
 
+ public void setPoly(){
+  allocatorSaw1 = new VoiceAllocator(oscModule.sawOscillatorsArray); 
+  allocatorSqu1 = new VoiceAllocator(oscModule.squareOscillatorsArray);
+  allocatorTri1 = new VoiceAllocator(oscModule.triangleOscillatorsArray);
+  allocatorSin1 = new VoiceAllocator(oscModule.sineOscillatorsArray);
+ }
+ 
+ public void setMono(){
+  allocatorSaw1 = new VoiceAllocator(oscModule.sawOscillatorsArrayMono); 
+  allocatorSqu1 = new VoiceAllocator(oscModule.squareOscillatorsArrayMono);
+  allocatorTri1 = new VoiceAllocator(oscModule.triangleOscillatorsArrayMono);
+  allocatorSin1 = new VoiceAllocator(oscModule.sineOscillatorsArrayMono);
+  
+ }
+ 
 }
 

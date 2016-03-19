@@ -19,7 +19,7 @@ import onix.Modules.LfoModule;
 import onix.Modules.LogoModule;
 import onix.Modules.Osc1Module;
 import onix.Modules.Osc2Module;
-import onix.Modules.PresetsModule;
+import onix.Modules.PolyphonyModule;
 import onix.Modules.WhiteNoiseModule;
 import onix.funcional.modules.MidiControl;
 import onix.funcional.modules.MidiHandler;
@@ -104,7 +104,7 @@ LineOut myOut;
         filterModule.getNoiseModuleInstance(whiteNoiseModule);
         filterModule.getOsc1ModuleInstance(osc1Module);
         
-        PresetsModule presetsModule = new PresetsModule(topPanel);
+        
         
         LfoModule lfoModule = new LfoModule(rightPanel, synth, filterModule,ampEnvelopeModule);
         
@@ -112,7 +112,7 @@ LineOut myOut;
         midiControl.voicesConfig(osc1Module,synth,lfoModule);
         midiControl.test();
         
-        
+        PolyphonyModule polyphonyModule = new PolyphonyModule(topPanel,midiControl);
         
         
     }

@@ -36,8 +36,8 @@ public class Osc1Module implements ActionListener {
     
     public   UnitOscillator sawOsc,squareOsc,triangleOsc,sineOsc;
     
-    private  KnobModule sawPitchKnob,sawAmpKnob,squPitchKnob,squAmpKnob,
-            triPitchKnob,triAmpKnob,sinePitchKnob,sineAmpKnob;
+    private  KnobModule sawAmpKnob,squAmpKnob,
+            triAmpKnob,sineAmpKnob;
     
     private JButton selectFilterButton = new JButton();
     
@@ -49,19 +49,25 @@ public class Osc1Module implements ActionListener {
     
     //Config Oscillators : INIT
     
-    public static final int MAX_VOICES=8;
+    public static final int POLYPHONIC_VOICES=8;
+    public static final int MONOPHONIC_VOICES=1;
     
     public MixerStereo mixerAllOscillators = new MixerStereo(4);
     
-    private MixerStereo mixerSawOscillators = new MixerStereo(MAX_VOICES);
-    private MixerStereo mixerSquareOscillators = new MixerStereo(MAX_VOICES);
-    private MixerStereo mixerTriangleOscillators = new MixerStereo(MAX_VOICES);
-    private MixerStereo mixerSineOscillators = new MixerStereo(MAX_VOICES);
+    private MixerStereo mixerSawOscillators = new MixerStereo(POLYPHONIC_VOICES);
+    private MixerStereo mixerSquareOscillators = new MixerStereo(POLYPHONIC_VOICES);
+    private MixerStereo mixerTriangleOscillators = new MixerStereo(POLYPHONIC_VOICES);
+    private MixerStereo mixerSineOscillators = new MixerStereo(POLYPHONIC_VOICES);
     
-    public SawtoothOscillator[] sawOscillatorsArray = new SawtoothOscillator[MAX_VOICES];
-    public SquareOscillator[] squareOscillatorsArray = new SquareOscillator[MAX_VOICES];
-    public TriangleOscillator[] triangleOscillatorsArray = new TriangleOscillator[MAX_VOICES];
-    public SineOscillator[] sineOscillatorsArray = new SineOscillator[MAX_VOICES];
+    public SawtoothOscillator[] sawOscillatorsArray = new SawtoothOscillator[POLYPHONIC_VOICES];
+    public SquareOscillator[] squareOscillatorsArray = new SquareOscillator[POLYPHONIC_VOICES];
+    public TriangleOscillator[] triangleOscillatorsArray = new TriangleOscillator[POLYPHONIC_VOICES];
+    public SineOscillator[] sineOscillatorsArray = new SineOscillator[POLYPHONIC_VOICES];
+    
+     public SawtoothOscillator[] sawOscillatorsArrayMono = new SawtoothOscillator[MONOPHONIC_VOICES];
+    public SquareOscillator[] squareOscillatorsArrayMono = new SquareOscillator[MONOPHONIC_VOICES];
+    public TriangleOscillator[] triangleOscillatorsArrayMono = new TriangleOscillator[MONOPHONIC_VOICES];
+    public SineOscillator[] sineOscillatorsArrayMono = new SineOscillator[MONOPHONIC_VOICES];
     
     
     //------------------------
@@ -80,7 +86,7 @@ public class Osc1Module implements ActionListener {
      //Config Oscillators 
     
      //Saw  
-    for (int i =0;i<MAX_VOICES;i++){
+    for (int i =0;i<POLYPHONIC_VOICES;i++){
      
     sawOscillatorsArray[i] = new SawtoothOscillator();
     synth.add(sawOscillatorsArray[i]);
@@ -90,8 +96,18 @@ public class Osc1Module implements ActionListener {
        
     }
     
+    for (int i =0;i<MONOPHONIC_VOICES;i++){
+     
+    sawOscillatorsArrayMono[i] = new SawtoothOscillator();
+    synth.add(sawOscillatorsArrayMono[i]);
+    sawOscillatorsArrayMono[i].output.connect(mixerSawOscillators);
+    sawOscillatorsArrayMono[i].amplitude.set(0);    
+    sawOscillatorsArrayMono[i].start();
+       
+    }
+    
     //Square
-    for (int i =0;i<MAX_VOICES;i++){
+    for (int i =0;i<POLYPHONIC_VOICES;i++){
      
     squareOscillatorsArray[i] = new SquareOscillator();
     synth.add(squareOscillatorsArray[i]);
@@ -100,8 +116,17 @@ public class Osc1Module implements ActionListener {
         
     }
     
+     for (int i =0;i<MONOPHONIC_VOICES;i++){
+     
+    squareOscillatorsArrayMono[i] = new SquareOscillator();
+    synth.add(squareOscillatorsArrayMono[i]);
+    squareOscillatorsArrayMono[i].amplitude.set(0);
+    squareOscillatorsArrayMono[i].output.connect(mixerSquareOscillators);
+        
+    }
+    
     //Triangle
-    for (int i =0;i<MAX_VOICES;i++){
+    for (int i =0;i<POLYPHONIC_VOICES;i++){
      
     triangleOscillatorsArray[i] = new TriangleOscillator();
     synth.add(triangleOscillatorsArray[i]);
@@ -110,13 +135,30 @@ public class Osc1Module implements ActionListener {
         
     }
     
+    for (int i =0;i<MONOPHONIC_VOICES;i++){
+     
+    triangleOscillatorsArrayMono[i] = new TriangleOscillator();
+    synth.add(triangleOscillatorsArrayMono[i]);
+    triangleOscillatorsArrayMono[i].amplitude.set(0);
+    triangleOscillatorsArrayMono[i].output.connect(mixerTriangleOscillators);
+        
+    }
     //Sine
-    for (int i =0;i<MAX_VOICES;i++){
+    for (int i =0;i<POLYPHONIC_VOICES;i++){
      
     sineOscillatorsArray[i] = new SineOscillator();
     synth.add(sineOscillatorsArray[i]);
     sineOscillatorsArray[i].amplitude.set(0);
     sineOscillatorsArray[i].output.connect(mixerSineOscillators);
+        
+    }
+    
+     for (int i =0;i<MONOPHONIC_VOICES;i++){
+     
+    sineOscillatorsArrayMono[i] = new SineOscillator();
+    synth.add(sineOscillatorsArrayMono[i]);
+    sineOscillatorsArrayMono[i].amplitude.set(0);
+    sineOscillatorsArrayMono[i].output.connect(mixerSineOscillators);
         
     }
   
@@ -276,10 +318,10 @@ public class Osc1Module implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
       
          if (ae.getActionCommand().equals("selectOsc")){
-            
-             
+               
              
             if(getOscType()==0){
+                
     
                 led1.setIcon(ledOffIcon);
                 led2.setIcon(ledOnIcon);
@@ -287,6 +329,7 @@ public class Osc1Module implements ActionListener {
               oscNum=1;
               
             }else if (getOscType()==1){
+                  
           
                 led3.setIcon(ledOnIcon);
                 led2.setIcon(ledOffIcon);
