@@ -3,10 +3,7 @@ package onix.Modules;
 
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
-import com.jsyn.unitgen.SawtoothOscillator;
 import com.jsyn.unitgen.SineOscillator;
-import com.jsyn.unitgen.SquareOscillator;
-import com.jsyn.unitgen.TriangleOscillator;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,8 +41,6 @@ public class LfoModule implements ActionListener {
 
     public SineOscillator sineOsc = new SineOscillator();
     
-    
-    
      //Constructor
     
     public LfoModule(JPanel rightPanel,Synthesizer mainSynth,
@@ -64,7 +59,7 @@ public class LfoModule implements ActionListener {
   
     synth.add(sineOsc);
     
-    jPanel=new JPanelFactory(rightPanel,0,3, 235, 182, Colors.DARK_BLUE,
+    jPanel=new JPanelFactory(rightPanel,3,149, 252, 145, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
     
 

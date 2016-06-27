@@ -186,9 +186,6 @@ public class Osc1Module implements ActionListener {
     synth.add(triangleOsc);
     synth.add(sineOsc);
     
-    
-    
-
         
     jPanel=new JPanelFactory(leftPanel,3,3, 252, 145, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);

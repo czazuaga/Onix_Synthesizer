@@ -39,7 +39,7 @@ public class LogoModule {
     
     jPanelLogo.setBorder(BorderFactory.createLineBorder(Colors.CRUNCH_WHITE, 1));
     jPanelLogo.setBackground(url);
-    jPanelLogo.setBounds(3,3,253,126);
+    jPanelLogo.setBounds(3,3,252,126);
 
     }
 

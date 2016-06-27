@@ -18,7 +18,6 @@ import onix.Modules.FilterModule;
 import onix.Modules.LfoModule;
 import onix.Modules.LogoModule;
 import onix.Modules.Osc1Module;
-import onix.Modules.Osc2Module;
 import onix.Modules.OscilloscopeModule;
 import onix.Modules.PolyphonyModule;
 import onix.Modules.WhiteNoiseModule;
@@ -41,15 +40,9 @@ LineOut myOut;
     
 
     void MainSynt() throws InterruptedException, MidiUnavailableException, IOException {
-        
-        
-        
+     
         initComoponents(); 
-        
-       //midiTest = new MidiHandler();
-       
-       
-        
+         
     }
             
 
@@ -71,7 +64,6 @@ LineOut myOut;
     }
     
     
-    
     private void configSynth (){
         
       int numInputChannels = 2;
@@ -85,18 +77,17 @@ LineOut myOut;
     
     
     
-    private void createModules () throws MidiUnavailableException, IOException, InterruptedException {
+    private void createModules () throws MidiUnavailableException, IOException,
+            InterruptedException {
+        
         LogoModule logoModule = new LogoModule(topPanel);
         
         FilterModule filterModule = new FilterModule(downPanel, synth);
 
-        WhiteNoiseModule whiteNoiseModule = new WhiteNoiseModule(rightPanel,
-                synth,filterModule);
+        WhiteNoiseModule whiteNoiseModule = new WhiteNoiseModule(downPanel,
+                synth,filterModule);      
         
-        
-        Osc1Module osc1Module = new Osc1Module(leftPanel, synth, filterModule);
-        
-        Osc2Module osc2Module = new Osc2Module(leftPanel, synth, filterModule);
+        Osc1Module osc1Module = new Osc1Module(leftPanel, synth, filterModule);    
         
         AmpEnvelopeModule ampEnvelopeModule = new AmpEnvelopeModule(downPanel,
                 synth, filterModule,osc1Module);
@@ -105,9 +96,7 @@ LineOut myOut;
         filterModule.getNoiseModuleInstance(whiteNoiseModule);
         filterModule.getOsc1ModuleInstance(osc1Module);
         
-        
-        
-        LfoModule lfoModule = new LfoModule(rightPanel, synth, filterModule,ampEnvelopeModule);
+        LfoModule lfoModule = new LfoModule(leftPanel, synth, filterModule,ampEnvelopeModule);
         
         midiControl = new MidiControl();
         midiControl.voicesConfig(osc1Module,synth,lfoModule);
@@ -115,7 +104,8 @@ LineOut myOut;
         
         PolyphonyModule polyphonyModule = new PolyphonyModule(topPanel,midiControl);
         
-        OscilloscopeModule oscilloscopeModule = new OscilloscopeModule(centerPanel,synth,filterModule, whiteNoiseModule);
+        OscilloscopeModule oscilloscopeModule = new OscilloscopeModule(
+                centerPanel,synth,filterModule, whiteNoiseModule);
     }
     
     
@@ -125,19 +115,19 @@ LineOut myOut;
         topPanel.setBounds(0, 0,784, 132);
         topPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));   
         
-        downPanel.setBackground(Color.BLUE);
+        downPanel.setBackground(Color.BLACK);
         downPanel.setBounds(0, 429,784, 132);
         downPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
    
-        leftPanel.setBackground(Color.RED);
+        leftPanel.setBackground(Color.BLACK);
         leftPanel.setBounds(0, 132,256, 297);
         leftPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
  
-        centerPanel.setBackground(Color.PINK);
+        centerPanel.setBackground(Color.BLACK);
         centerPanel.setBounds(256, 132,290, 297);
         centerPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
           
-        rightPanel.setBackground(Color.ORANGE);
+        rightPanel.setBackground(Color.BLACK);
         rightPanel.setBounds(546, 132,238, 297);
         rightPanel.setBorder(BorderFactory.createLineBorder(Colors.REAL_BLACK, 3));
         
@@ -160,7 +150,7 @@ LineOut myOut;
     
     fullPanel.setBackground(Color.yellow);
     
-    jFrame.setBounds(0, 0, 790, 590);   
+    jFrame.setBounds(0, 0, 555, 590);   
     jFrame.setVisible(true);
     jFrame.setResizable(false);
     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE );

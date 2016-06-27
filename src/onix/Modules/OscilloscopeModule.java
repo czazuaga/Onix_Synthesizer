@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 package onix.Modules;
-
 import StyleResources.Colors;
 import com.jsyn.Synthesizer;
-import com.jsyn.scope.AudioScope;
-import java.awt.BorderLayout;
 import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import onix.funcional.modules.JPanelBackground;
-import onix.funcional.modules.JPanelFactory;
 
 /**
  *

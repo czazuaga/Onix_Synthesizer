@@ -24,18 +24,18 @@ public class WhiteNoiseModule {
    
    
     
-    public WhiteNoiseModule (JPanel rightPanel,Synthesizer mainSynth,
+    public WhiteNoiseModule (JPanel downPanel,Synthesizer mainSynth,
             
             FilterModule filterModule) {
     
-        jPanel=new JPanelFactory(rightPanel,0,185, 235, 109, Colors.DARK_BLUE,
+        jPanel=new JPanelFactory(downPanel,425,3, 121, 126, Colors.DARK_BLUE,
             1, Colors.CRUNCH_WHITE);
         
         this.filterModule=filterModule;
         
         whiteNoise = new WhiteNoise();
         
-        ampKnob = new KnobModule(whiteNoise.amplitude, jPanel, 0, 1, 0,90,37,50,50);
+        ampKnob = new KnobModule(whiteNoise.amplitude, jPanel, 0, 1, 0,40,37,50,50);
         
         whiteNoise.output.connect(filterModule.filterLowPass.input);
 
@@ -45,7 +45,7 @@ public class WhiteNoiseModule {
 
     public void  addLabels () {
     
-        JLabel jLabelModuleName = new JLabel("White Noise");
+        JLabel jLabelModuleName = new JLabel("Noise");
         
         jLabelModuleName.setFont(new Font("2Tech", 0, 15));
         jLabelModuleName.setBounds(20, 0, 200, 40);
@@ -56,7 +56,7 @@ public class WhiteNoiseModule {
         JLabel jLabelKnobName = new JLabel("Amp");
         
         jLabelKnobName.setFont(new Font("2Tech", 1, 11));
-        jLabelKnobName.setBounds(103, 88, 200, 20);
+        jLabelKnobName.setBounds(52, 88, 200, 20);
         jLabelKnobName.setForeground(Colors.BRIGHT_BLUE);
         jPanel.add(jLabelKnobName);
     }

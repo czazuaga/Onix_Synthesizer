@@ -5,8 +5,6 @@ import StyleResources.Colors;
 import com.jsyn.Synthesizer;
 import com.jsyn.unitgen.EnvelopeDAHDSR;
 import com.jsyn.unitgen.SineOscillator;
-import com.jsyn.unitgen.SquareOscillator;
-import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,7 +29,7 @@ public AmpEnvelopeModule (JPanel downPanel,Synthesizer mainSynth,
 this.filterModule = filterModule; 
 this.osc1Module = osc1Module;
     
-jPanel = new JPanelFactory(downPanel, 255, 3, 291, 126,
+jPanel = new JPanelFactory(downPanel, 256, 3, 168, 126,
         Colors.DARK_BLUE, 1, Colors.CLEAN_WHITE);
 
 mainSynth.add(envelope);
